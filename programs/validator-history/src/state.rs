@@ -654,8 +654,9 @@ pub struct ClusterHistory {
 #[zero_copy]
 pub struct ClusterHistoryEntry {
     pub total_blocks: u32,
+    pub epoch_start_timestamp: u32,
     pub epoch: u16,
-    pub padding: [u8; 250],
+    pub padding: [u8; 246],
 }
 
 impl Default for ClusterHistoryEntry {
@@ -663,7 +664,8 @@ impl Default for ClusterHistoryEntry {
         Self {
             total_blocks: u32::MAX,
             epoch: u16::MAX,
-            padding: [u8::MAX; 250],
+            epoch_start_timestamp: u32::MAX,
+            padding: [u8::MAX; 246],
         }
     }
 }
@@ -791,6 +793,15 @@ impl ClusterHistory {
         };
         self.history.push(entry);
 
+        Ok(())
+    }
+    pub fn set_epoch_start_timestamp(&mut self, epoch: u16, epoch_start_timestamp: u32) -> Result<()> {
+        if let Some(entry) = self.history.last_mut() {
+            if entry.epoch == epoch {
+                entry.epoch_start_timestamp = epoch_start_timestamp;
+                return Ok(());
+            }
+        }
         Ok(())
     }
 }

@@ -5,6 +5,10 @@ pub fn cast_epoch(epoch: u64) -> u16 {
     (epoch % u16::MAX as u64).try_into().unwrap()
 }
 
+pub fn cast_epoch_start_timestamp(start_timestamp: i64) -> u32 {
+    start_timestamp.try_into().unwrap()
+}
+
 pub fn fixed_point_sol(lamports: u64) -> u32 {
     // convert to sol
     let mut sol = lamports_to_sol(lamports);
