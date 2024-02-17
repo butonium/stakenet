@@ -18,8 +18,7 @@ no-entrypoint = []
 no-idl = []
 no-log-ix-name = []
 cpi = ["no-entrypoint"]
-default = ["custom-heap"]
-custom-heap = []
+default = []
 
 [dependencies]
 anchor-lang = "0.28.0"
