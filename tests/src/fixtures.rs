@@ -248,6 +248,26 @@ impl TestFixture {
             .expect("Failed warping to future epoch");
     }
 
+    pub async fn advance_clock(&self, num_epochs: u64, ms_per_slot: u64) -> u64 {
+        let mut clock: Clock = self
+            .ctx
+            .borrow_mut()
+            .banks_client
+            .get_sysvar()
+            .await
+            .expect("Failed getting clock");
+
+        let epoch_schedule: EpochSchedule = self.ctx.borrow().genesis_config().epoch_schedule;
+        let target_epoch = clock.epoch + num_epochs;
+        let dif_slots = epoch_schedule.get_first_slot_in_epoch(target_epoch) - clock.slot;
+
+        clock.epoch_start_timestamp += (dif_slots * ms_per_slot) as i64;
+        clock.unix_timestamp += (dif_slots * ms_per_slot) as i64;
+        self.ctx.borrow_mut().set_sysvar(&clock);
+
+        dif_slots
+    }
+
     pub async fn submit_transaction_assert_success(&self, transaction: Transaction) {
         let mut ctx = self.ctx.borrow_mut();
         if let Err(e) = ctx

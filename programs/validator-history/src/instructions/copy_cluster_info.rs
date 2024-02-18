@@ -3,7 +3,11 @@ use anchor_lang::{
     solana_program::{clock::Clock, slot_history::Check},
 };
 
-use crate::{errors::ValidatorHistoryError, utils::{cast_epoch, cast_epoch_start_timestamp}, ClusterHistory};
+use crate::{
+    errors::ValidatorHistoryError,
+    utils::{cast_epoch, cast_epoch_start_timestamp},
+    ClusterHistory,
+};
 
 #[derive(Accounts)]
 pub struct CopyClusterInfo<'info> {

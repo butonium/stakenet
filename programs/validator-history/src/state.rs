@@ -795,7 +795,11 @@ impl ClusterHistory {
 
         Ok(())
     }
-    pub fn set_epoch_start_timestamp(&mut self, epoch: u16, epoch_start_timestamp: u32) -> Result<()> {
+    pub fn set_epoch_start_timestamp(
+        &mut self,
+        epoch: u16,
+        epoch_start_timestamp: u32,
+    ) -> Result<()> {
         if let Some(entry) = self.history.last_mut() {
             if entry.epoch == epoch {
                 entry.epoch_start_timestamp = epoch_start_timestamp;
